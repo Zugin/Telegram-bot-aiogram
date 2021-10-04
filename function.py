@@ -6,23 +6,42 @@ import keyboards
 class FunctionBot():
     def __init__(self):
         self.dir_list = []
-        self.comand_bn = []
-        self.bn_list = []
+        self.bn_comand = []
         self.path_fold = ""
         self.bn_create = ['Создать', 'Отмена']
         self.flag_start = False
         self.flag_step_back = False
         self.flag_create_foldier = False
+        self.bn_list = []
+        self.bn_dict = {}
+
+
+    def create_bn_dict(self,user_id):
+        #  Создание словаря при вызове команды старт
+        self.bn_dict[user_id] = {
+                'bn_comand' : [],
+                'dir_list' : [],
+                'path_fold' : '',
+                'flag_start' : True,
+                'flag_step_back' : False,
+                'flag_create_foldier' : False
+            }
+        print(self.bn_dict)
+
+    def bn_dict_args(self, user_id):
+        bn_comand = self.bn_dict[user_id]['bn_comand']
+
+
 
 
     def folders(self, path_fold=''):
         #  Формирование списка состоящего из папок и добавление кнопки списка "Назад" и "Создать папку"
-        self.comand_bn = ['Создать папку']
+        self.bn_comand = ['Создать папку']
         if not self.flag_start:
-            self.comand_bn += ['Удалить папку','Назад']
+            self.bn_comand += ['Удалить папку', 'Назад']
         else:
             try:
-                self.comand_bn.remove('Назад')
+                self.bn_comand.remove('Назад')
             except ValueError:
                 pass
         if not self.flag_step_back or not path_fold == '':
@@ -83,7 +102,7 @@ class FunctionBot():
             self.moving_folder(data)
         elif data == 'Создать папку':
             text = 'Для создания новой папки нажми "Создать" или "Отмена"'
-            self.comand_bn = self.bn_create
+            self.bn_comand = self.bn_create
             self.bn_list = []
             data = ''
         elif data == 'Отмена':
@@ -92,7 +111,7 @@ class FunctionBot():
         elif data == 'Создать':
             text = 'Отправь название папки и после нажми "Готово"'
             data = ''
-            self.comand_bn = ['Готово']
+            self.bn_comand = ['Готово']
             self.flag_create_foldier = True
         elif data == 'Готово':
             self.flag_step_back = True

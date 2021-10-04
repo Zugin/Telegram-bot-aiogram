@@ -4,10 +4,13 @@ from aiogram.types import ReplyKeyboardRemove, \
 
 
 # Инлайн клавиатура
-def kb(num):
-    inline_bn = InlineKeyboardMarkup()
-    for i in range(num):
-        inline_bn.insert(InlineKeyboardButton(f'Кнопка {i}', callback_data=f'button{i}'))
+def kb(bn_list, bn_comand):
+    inline_bn = InlineKeyboardMarkup(row_width=2)
+    for i in bn_comand:
+        inline_bn.insert(InlineKeyboardButton(i, callback_data=i))
+
+    for i in bn_list:
+        inline_bn.insert(InlineKeyboardButton(f'{i} 📁', callback_data=i))
 
     return inline_bn
 

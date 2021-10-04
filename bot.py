@@ -10,8 +10,7 @@ import function
 
 """
 Бот по обработке фотографий для торговых представителей и мерчендайзеров.
-
-Структурирует по заданным папкам, создает итоговый архив
+Структурирует фото по заданным папкам, создает итоговый архив
 """
 
 # Объект бота
@@ -36,11 +35,15 @@ async def process_command_1(message: types.Message):
         os.mkdir(str(message.from_user.id))
     except FileExistsError:
         pass
+
+    #  Словарь пользователя
+    function.create_bn_dict(message.from_user.id)
+
     #  Добавление клавиатуры
     function.delete_func()
     function.flag_start = True
     function.folders(message.from_user.id)
-    inline_bn = keyboards.kb(function.bn_list, function.comand_bn)
+    inline_bn = keyboards.kb(function.bn_list, function.bn_comand)
     await message.reply("Начало работы с ботом", reply_markup=inline_bn)
 
 @dp.callback_query_handler()
@@ -50,7 +53,7 @@ async def main_func(message: types.CallbackQuery):
     #  Вызов функции для реакции на нажатие кнопок Создание клавиатур, запись текста сообщения
     text = function.bn_reaction(data)
     #  Создание клавиатуры
-    inline_bn = keyboards.kb(function.bn_list, function.comand_bn)
+    inline_bn = keyboards.kb(function.bn_list, function.bn_comand)
 
     #  await bot.send_message(message.from_user.id, 'В папке есть файлы', reply_markup=inline_bn)
     await bot.answer_callback_query(message.id)
